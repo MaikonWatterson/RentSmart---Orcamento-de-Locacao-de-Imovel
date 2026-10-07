@@ -1,0 +1,50 @@
+RELATÓRIO TÉCNICO: DESENVOLVIMENTO DO SISTEMA RENTSMART
+
+Projeto: RentSmart — Sistema de Orçamento de Locação  
+Contexto: Automação do processo comercial da R.M Imóveis  
+Paradigma: Programação Orientada a Objetos (POO) em Python  
+
+
+1. Introdução e Objetivos
+O processo comercial tradicional da R.M Imóveis apresentava gargalos devido ao cálculo manual de orçamentos de locação, o que gerava lentidão no atendimento e riscos de falhas humanas na aplicação de taxas e descontos. 
+O objetivo deste projeto foi projetar e implementar o RentSmart, uma solução computacional robusta em Python. A ferramenta automatiza a captação de parâmetros da locação, executa as regras de negócio por meio de classes orientadas a objetos e gera uma projeção financeira de 12 meses exportável em formato CSV.
+
+
+2. Modelagem Orientada a Objetos
+A arquitetura do software foi dividida em duas entidades principais para garantir alta coesão e baixo acoplamento:
+
+Entidade 1 -- Classe Imóvel --
+
+Modela as características físicas e financeiras do bem locado.
+
+Atributos: tipo, vaga_garagem, num_vagas_extra, aluguel_base.
+
+Métodos Principais:
+calcular_aluguel_base(): Identifica e atribui o valor base conforme a categoria e quantidade de quartos.
+calcular_pacote_inicial_garagem(): Gerencia regras distintas de estacionamento (ex: pacote de 2 vagas para estúdios vs. vaga única para casas/apartamentos).
+calcular_vagas_extras(): Computa o valor adicional por vaga excedente em estúdios.
+
+Entidade 2 -- Classe Orçamento --
+
+Gerencia a relação comercial entre o cliente, o imóvel escolhido e as condições de pagamento.
+
+Atributos: cliente_nome, imovel, sem_criancas, parcelas_taxa, além da constante estática TAXA_CONTRATUAL_TOTAL (R$ 2.000,00).
+
+Métodos Principais:
+calcular_desconto(): Aplica a regra de negócio específica para apartamentos (5% de desconto caso o cliente não possua crianças).
+calcular_aluguel_mensal_final(): Consolida o subtotal, aplica descontos e retorna o valor líquido mensal.
+gerar_projecao_12_meses() e exportar_csv(): Compilam a matriz financeira mês a mês — diferenciando o pagamento parcelado da taxa contratual do aluguel recorrente — e geram o arquivo projecao_locacao.csv utilizando delimitadores adequados para planilhas (';' e codificação 'utf-8-sig').
+
+
+3. Decisões Algorítmicas e Regras de Negócio
+
+Primeira - Validação de Entradas: O sistema valida escolhas numéricas do menu, quantidade de vagas e restringe o parcelamento da taxa contratual estritamente ao intervalo de 1 a 5 vezes, evitando exceções em tempo de execução (ValueError).
+
+Segunda - Independência de Custos: Conforme exigido pelas diretrizes comerciais, o aluguel mensal e a taxa contratual são segregados na projeção anual. A taxa contratual deixa de incidir após o término de suas parcelas (máximo de 5 meses), estabilizando o fluxo de caixa do inquilino nos meses seguintes.
+
+Terceira - Formatação de Saída: Os valores monetários são tratados com duas casas decimais e o arquivo CSV gerado utiliza ponto e vírgula como separador, facilitando a abertura direta em softwares de planilha como Microsoft Excel ou LibreOffice Calc.
+
+
+4. Conclusão
+
+O RentSmart atinge com precisão todos os requisitos propostos pelo desafio acadêmico e comercial. A aplicação do paradigma de Orientação a Objetos permitiu isolar a complexidade de cálculo de garagens e descontos dentro da classe de domínio, resultando em um código limpo, modular, de fácil manutenção e expansível para futuras categorias de imóveis.
