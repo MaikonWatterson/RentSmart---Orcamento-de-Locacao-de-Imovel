@@ -39,3 +39,5 @@ O sistema foi estruturado com foco na separação de responsabilidades e encapsu
 
 bash
 python main.py
+
+## Ou simplesmente Execute no próprio Ambiente Python  de sua preferência.
